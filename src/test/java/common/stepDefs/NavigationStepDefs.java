@@ -21,7 +21,8 @@ public class NavigationStepDefs {
 
 	@Then("^I am on \"([^\"]*)\" Page$")
 	public void i_am_on_Page(String title) throws Throwable {
-		Assert.assertEquals("", driver.getTitle(), title);
+//		System.out.println("#title = " + driver.getTitle());
+		Assert.assertEquals("title was not equal to driver.getTitle() - title = " + title + " driver.getTitle = " + driver.getTitle(), driver.getTitle(), title);
 	}
 
 }
