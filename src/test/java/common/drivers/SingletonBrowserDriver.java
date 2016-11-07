@@ -9,37 +9,37 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class SingletonBrowserDriver {
 
-	private static WebDriver driver;
+    private static WebDriver driver;
 
-	public static WebDriver getWebDriver(BrowserType type) {
-		if (driver == null) {
-			switch (type) {
-			case FIREFOX: {
-				FirefoxProfile fp = new FirefoxProfile();
-				fp.setAcceptUntrustedCertificates(true);
-				driver = new FirefoxDriver(fp);
-				break;
-			}
-			case CHROME: {
-				System.setProperty("webdriver.chrome.driver",
-						"chrome/chromedriver.exe");
-				ChromeOptions co = new ChromeOptions();
-				DesiredCapabilities dc = DesiredCapabilities.chrome();
-				dc.setCapability(ChromeOptions.CAPABILITY, co);
-				driver = new ChromeDriver(dc);
-				break;
-			}
-			default: {
-				System.setProperty("webdriver.chrome.driver",
-						"chrome/chromedriver.exe");
-				ChromeOptions co = new ChromeOptions();
-				DesiredCapabilities dc = DesiredCapabilities.chrome();
-				dc.setCapability(ChromeOptions.CAPABILITY, co);
-				driver = new ChromeDriver(dc);
-			}
-			}
-		}
-		return driver;
-	}
+    public static WebDriver getWebDriver(BrowserType type) {
+        if (driver == null) {
+            switch (type) {
+                case FIREFOX: {
+                    FirefoxProfile fp = new FirefoxProfile();
+                    fp.setAcceptUntrustedCertificates(true);
+                    driver = new FirefoxDriver(fp);
+                    break;
+                }
+                case CHROME: {
+                    System.setProperty("webdriver.chrome.driver",
+                            "chrome/chromedriver.exe");
+                    ChromeOptions co = new ChromeOptions();
+                    DesiredCapabilities dc = DesiredCapabilities.chrome();
+                    dc.setCapability(ChromeOptions.CAPABILITY, co);
+                    driver = new ChromeDriver(dc);
+                    break;
+                }
+                default: {
+                    System.setProperty("webdriver.chrome.driver",
+                            "chrome/chromedriver.exe");
+                    ChromeOptions co = new ChromeOptions();
+                    DesiredCapabilities dc = DesiredCapabilities.chrome();
+                    dc.setCapability(ChromeOptions.CAPABILITY, co);
+                    driver = new ChromeDriver(dc);
+                }
+            }
+        }
+        return driver;
+    }
 
 }
