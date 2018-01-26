@@ -3,18 +3,16 @@ package common.stepDefs;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import common.drivers.BrowserType;
-import common.drivers.SingletonBrowserDriver;
+import common.drivers.SingletonDriver;
 
 import cucumber.api.java.en.When;
 
 public class PageStepDefs {
 
-    public static final WebDriver driver = SingletonBrowserDriver
-            .getWebDriver(BrowserType.CHROME);
+    private static final WebDriver driver = SingletonDriver.getDriver();
 
     @When("^I click on \"([^\"]*)\" link on page$")
-    public void i_click_on_link_on_page(String linkText) throws Throwable {
+    public void i_click_on_link_on_page(String linkText) {
         driver.findElement(By.linkText(linkText)).click();
     }
 
