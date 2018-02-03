@@ -1,13 +1,12 @@
 package common.stepDefs;
 
 import common.config.PropertyLoader;
-import org.junit.Assert;
-import org.openqa.selenium.WebDriver;
-
+import common.drivers.SingletonDriver;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import org.openqa.selenium.WebDriver;
 
-import common.drivers.SingletonDriver;
+import static org.junit.Assert.assertEquals;
 
 public class NavigationStepDefs {
 
@@ -21,7 +20,7 @@ public class NavigationStepDefs {
 
     @Then("^I am on \"([^\"]*)\" Page$")
     public void i_am_on_Page(String title) {
-        Assert.assertEquals("title was not equal to driver.getTitle() - title = " + title + " driver.getTitle = " + driver.getTitle(), driver.getTitle(), title);
+        assertEquals("title was not equal to driver.getTitle() - title = " + title + " driver.getTitle = " + driver.getTitle(), driver.getTitle(), title);
     }
 
     @Given("^I visit \"([^\"]*)\"$")
