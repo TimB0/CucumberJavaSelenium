@@ -1,6 +1,7 @@
 package common.drivers;
 
 import com.google.gson.JsonObject;
+import common.config.PropertyLoader;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,6 +15,8 @@ public class SingletonDriver {
 
     private SingletonDriver() {
     }
+
+    private static final PropertyLoader PROPERTY_LOADER = PropertyLoader.getPropertyLoader();
 
     private static WebDriver driver;
 
@@ -33,12 +36,6 @@ public class SingletonDriver {
                         options.setProxy(proxy);
                     }
                     options.setAcceptInsecureCerts(true);
-//                    FirefoxProfile profile = new FirefoxProfile();
-//                    profile.setAcceptUntrustedCertificates(true);
-//                    profile.setPreference("network.proxy.type", 1);//Manual
-//                    profile.setPreference("network.proxy.http", "localhost");
-//                    profile.setPreference("network.proxy.http_port", 11111);
-//                    options.setProfile(profile);
                     driver = new FirefoxDriver(options);
                     break;
                 }
@@ -55,15 +52,15 @@ public class SingletonDriver {
     }
 
     public static WebDriver getDriver() {
-        String browserName = System.getProperty("browser", "firefox");
+        String browserName = PROPERTY_LOADER.getProperty("browser", BrowserType.FIREFOX.toString());
         //assuming name is coming as correct
         BrowserType type = BrowserType.fromName(browserName);
-        boolean proxyEnabled = Boolean.valueOf(System.getProperty("proxy.enabled", "FALSE"));
+        boolean proxyEnabled = Boolean.valueOf(PROPERTY_LOADER.getProperty("proxy.enabled", "FALSE"));
         return getWebDriver(type, proxyEnabled);
     }
 
     private static Proxy getProxySettings() {
-        String proxyPath = System.getProperty("proxy.path", "localhost:11111");
+        String proxyPath = PROPERTY_LOADER.getProperty("proxy.path", "localhost:11111");
         Proxy proxy = new Proxy();
         proxy.setHttpProxy(proxyPath);
         proxy.setFtpProxy(proxyPath);
