@@ -1,13 +1,11 @@
 package common.stepDefs;
 
 import common.config.PropertyLoader;
+import common.drivers.SingletonDriver;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
-import common.drivers.SingletonDriver;
-
-import cucumber.api.java.en.When;
 
 public class PageStepDefs {
 

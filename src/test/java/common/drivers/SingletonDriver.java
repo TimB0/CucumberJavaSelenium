@@ -51,6 +51,14 @@ public class SingletonDriver {
         return driver;
     }
 
+    /**
+     * Creates, if not exists, else returne existing instance of WebDriver.
+     * The browser is set in properties file.
+     * proxy settings are also set in property file;
+     * proxy only works with firefox;
+     *
+     * @return - Singleton instance of WebDriver
+     */
     public static WebDriver getDriver() {
         String browserName = PROPERTY_LOADER.getProperty("browser", BrowserType.FIREFOX.toString());
         //assuming name is coming as correct
@@ -62,9 +70,9 @@ public class SingletonDriver {
     private static Proxy getProxySettings() {
         String proxyPath = PROPERTY_LOADER.getProperty("proxy.path", "localhost:11111");
         Proxy proxy = new Proxy();
+        proxy.setProxyType(Proxy.ProxyType.MANUAL);
         proxy.setHttpProxy(proxyPath);
         proxy.setFtpProxy(proxyPath);
-        proxy.setProxyType(Proxy.ProxyType.MANUAL);
         proxy.setSslProxy(proxyPath);
         System.out.println("proxy - json = " + proxy.toJson());
         return proxy;

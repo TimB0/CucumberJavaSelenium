@@ -4,8 +4,6 @@ import common.config.PropertyLoader;
 import common.drivers.SingletonDriver;
 import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
-import static org.assertj.core.api.Assertions.*;
-
 import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -14,6 +12,9 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class FormStepDefs {
 
@@ -28,10 +29,10 @@ public class FormStepDefs {
     private PropertyLoader propertyLoader = PropertyLoader.getPropertyLoader();
 
     @Then("^I fill the form with data:$")
-    public void i_fill_the_form_with_data(DataTable dataTable) throws Throwable {
+    public void i_fill_the_form_with_data(DataTable dataTable) {
         //this gets 1st row column as keys, and rest values
         List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
-        for(Map<String, String> column: data) {
+        for (Map<String, String> column : data) {
             String fieldKey = column.get(FIELD_KEY_NAME);
             String fieldLocatorKey = propertyLoader.getParsedProperty(fieldKey);
             String fieldLocatorValue = propertyLoader.getProperty(fieldLocatorKey);
@@ -40,19 +41,19 @@ public class FormStepDefs {
             String fieldType = column.get(FORM_FIELD_TYPE);
 
             switch (fieldType.toLowerCase()) {
-                case "text" : {
+                case "text": {
                     WebElement field = getElement(locatorType, fieldLocatorValue);
                     assertThat(field.getAttribute(ELEMENT_ATTR_TYPE)).isEqualToIgnoringCase(fieldType);
                     field.sendKeys(fieldValue);
                     break;
                 }
-                case "password" : {
+                case "password": {
                     WebElement field = getElement(locatorType, fieldLocatorValue);
                     assertThat(field.getAttribute(ELEMENT_ATTR_TYPE)).isEqualToIgnoringCase(fieldType);
                     field.sendKeys(fieldValue);
                     break;
                 }
-                case "radio" : {
+                case "radio": {
                     //radio always comes in group, hence find by name is safest option
                     List<WebElement> radioGroup = getElementsByName(fieldLocatorValue);
                     assertThat(radioGroup.stream()
@@ -61,7 +62,7 @@ public class FormStepDefs {
                     selectElementByValue(fieldValue, radioGroup);
                     break;
                 }
-                case "checkbox" : {
+                case "checkbox": {
                     //checkbox always comes in group, hence find by name is safest option
                     List<WebElement> checkboxGroup = getElementsByName(fieldLocatorValue);
                     assertThat(checkboxGroup.stream()
@@ -70,14 +71,14 @@ public class FormStepDefs {
                     selectElementByValue(fieldValue, checkboxGroup);
                     break;
                 }
-                case "select" : {
+                case "select": {
                     WebElement field = getElement(locatorType, fieldLocatorValue);
                     assertThat(field.getTagName()).isEqualToIgnoringCase("select");
                     Select select = new Select(field);
                     select.selectByVisibleText(fieldValue);
                     break;
                 }
-                case "textarea" : {
+                case "textarea": {
                     WebElement field = getElement(locatorType, fieldLocatorValue);
                     assertThat(field.getTagName()).isEqualToIgnoringCase("textarea");
                     //clear first. This brings the field into focus.
@@ -91,15 +92,15 @@ public class FormStepDefs {
 
     private void selectElementByValue(String fieldValue, List<WebElement> elements) {
         boolean notClicked = true;
-        for(WebElement radio: elements) {
+        for (WebElement radio : elements) {
             String value = radio.getAttribute(ELEMENT_ATTR_VALUE);
-            if(value.equalsIgnoreCase(fieldValue)) {
+            if (value.equalsIgnoreCase(fieldValue)) {
                 radio.click();
                 notClicked = false;
                 break;
             }
         }
-        if(notClicked) {
+        if (notClicked) {
             System.err.println("Element with Field Value : " + fieldValue + " NOT FOUND in group - " + elements);
             fail("Element not found with given value : %s in the group of elements provided - %s.", fieldValue, elements);
         }
@@ -108,13 +109,14 @@ public class FormStepDefs {
     /**
      * It returns locator type like - id, name, xpath etc.
      * default value returned is 'id'.
+     *
      * @param locatorKey - key from property file
      * @return - locator type
      */
     private String getLocatorType(String locatorKey) {
-        if(locatorKey.endsWith("_id")) {
+        if (locatorKey.endsWith("_id")) {
             return "id";
-        } else if(locatorKey.endsWith("_name")) {
+        } else if (locatorKey.endsWith("_name")) {
             return "name";
         } else if (locatorKey.endsWith("_xpath")) {
             return "xpath";
@@ -123,8 +125,10 @@ public class FormStepDefs {
         }
     }
 
-    /** return the field based on the locator type and the locator value.
+    /**
+     * return the field based on the locator type and the locator value.
      * For eg:- if locatorType = id, then driver.findElement(By.id(locatorValue))
+     *
      * @param locatorType
      * @param locatorValue
      * @return
@@ -132,15 +136,15 @@ public class FormStepDefs {
     private WebElement getElement(String locatorType, String locatorValue) {
         WebElement element = null;
         switch (locatorType) {
-            case "id" : {
+            case "id": {
                 element = driver.findElement(By.id(locatorValue));
                 break;
             }
-            case "name" : {
+            case "name": {
                 element = driver.findElement(By.name(locatorValue));
                 break;
             }
-            case "xpath" : {
+            case "xpath": {
                 element = driver.findElement(By.xpath(locatorValue));
                 break;
             }
@@ -149,7 +153,9 @@ public class FormStepDefs {
     }
 
 
-    /** returns all elements by name - used for radio/check=box kind of fields
+    /**
+     * returns all elements by name - used for radio/check=box kind of fields
+     *
      * @return List<WebElement> that met criteria
      */
     private List<WebElement> getElementsByName(String name) {
@@ -157,7 +163,7 @@ public class FormStepDefs {
     }
 
     @When("^I submit the form$")
-    public void i_submit_the_form() throws Throwable {
+    public void i_submit_the_form() {
         driver.findElement(By.xpath("//input[@type='submit']")).click();
     }
 

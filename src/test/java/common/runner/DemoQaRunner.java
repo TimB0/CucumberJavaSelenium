@@ -27,7 +27,7 @@ public class DemoQaRunner {
 
     @AfterClass
     public static void afterAll() {
-        if(Objects.nonNull(driver)) {
+        if (Objects.nonNull(driver)) {
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 System.out.println("SHUTDOWN HOOK STARTED!!!");
                 driver.quit();

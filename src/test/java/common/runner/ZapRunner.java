@@ -22,6 +22,7 @@ public class ZapRunner {
 
     @BeforeClass
     public static void beforeAll() {
+        //this needs to be controller from property file
         System.setProperty("browser", "firefox");
         System.setProperty("proxy.enabled", "true");
         System.setProperty("proxy.path", "localhost:11111");
@@ -30,7 +31,7 @@ public class ZapRunner {
 
     @AfterClass
     public static void afterAll() {
-        if(Objects.nonNull(driver)) {
+        if (Objects.nonNull(driver)) {
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 System.out.println("SHUTDOWN HOOK STARTED!!!");
                 driver.quit();

@@ -1,12 +1,11 @@
 package common.runner;
 
 import common.drivers.SingletonDriver;
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
 import org.openqa.selenium.WebDriver;
 
 import java.util.Objects;
@@ -28,7 +27,7 @@ public class RunSuite {
 
     @AfterClass
     public static void afterAll() {
-        if(Objects.nonNull(driver)) {
+        if (Objects.nonNull(driver)) {
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 System.out.println("SHUTDOWN HOOK STARTED!!!");
                 driver.quit();

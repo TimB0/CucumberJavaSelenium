@@ -14,9 +14,15 @@ public enum BrowserType {
         return this.name;
     }
 
+    /**
+     * returns Browser type if found, else throw exception
+     *
+     * @param name - name of the browser
+     * @return BrowserType
+     */
     public static BrowserType fromName(String name) {
-        for(BrowserType type: BrowserType.values()) {
-            if(type.name.equalsIgnoreCase(name)) {
+        for (BrowserType type : BrowserType.values()) {
+            if (type.name.equalsIgnoreCase(name)) {
                 return type;
             }
         }
