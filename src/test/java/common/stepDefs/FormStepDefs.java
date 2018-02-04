@@ -5,9 +5,12 @@ import common.drivers.SingletonDriver;
 import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
 import static org.assertj.core.api.Assertions.*;
+
+import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -43,6 +46,12 @@ public class FormStepDefs {
                     field.sendKeys(fieldValue);
                     break;
                 }
+                case "password" : {
+                    WebElement field = getElement(locatorType, fieldLocatorValue);
+                    assertThat(field.getAttribute(ELEMENT_ATTR_TYPE)).isEqualToIgnoringCase(fieldType);
+                    field.sendKeys(fieldValue);
+                    break;
+                }
                 case "radio" : {
                     //radio always comes in group, hence find by name is safest option
                     List<WebElement> radioGroup = getElementsByName(fieldLocatorValue);
@@ -59,6 +68,13 @@ public class FormStepDefs {
                             .allMatch(e -> e.getAttribute(ELEMENT_ATTR_TYPE).equalsIgnoreCase(fieldType))
                     ).isTrue();
                     selectElementByValue(fieldValue, checkboxGroup);
+                    break;
+                }
+                case "select" : {
+                    WebElement field = getElement(locatorType, fieldLocatorValue);
+                    assertThat(field.getTagName()).isEqualToIgnoringCase("select");
+                    Select select = new Select(field);
+                    select.selectByVisibleText(fieldValue);
                     break;
                 }
                 case "textarea" : {
@@ -107,7 +123,8 @@ public class FormStepDefs {
         }
     }
 
-    /**
+    /** return the field based on the locator type and the locator value.
+     * For eg:- if locatorType = id, then driver.findElement(By.id(locatorValue))
      * @param locatorType
      * @param locatorValue
      * @return
@@ -137,6 +154,11 @@ public class FormStepDefs {
      */
     private List<WebElement> getElementsByName(String name) {
         return driver.findElements(By.name(name));
+    }
+
+    @When("^I submit the form$")
+    public void i_submit_the_form() throws Throwable {
+        driver.findElement(By.xpath("//input[@type='submit']")).click();
     }
 
 }
