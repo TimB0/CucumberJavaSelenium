@@ -8,7 +8,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.CapabilityType;
 
+import java.io.File;
 import java.util.Objects;
 
 public class SingletonDriver {
@@ -36,6 +39,10 @@ public class SingletonDriver {
                         options.setProxy(proxy);
                     }
                     options.setAcceptInsecureCerts(true);
+                    //for disabling JS - adding extension that blocks js - A WORKAROUND
+                    FirefoxProfile profile = new FirefoxProfile();
+                    profile.addExtension(new File("no-script/noscript.xpi"));
+                    options.setProfile(profile);
                     driver = new FirefoxDriver(options);
                     break;
                 }
