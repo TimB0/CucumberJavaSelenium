@@ -40,9 +40,9 @@ public class SingletonDriver {
                     }
                     options.setAcceptInsecureCerts(true);
                     //for disabling JS - adding extension that blocks js - A WORKAROUND
-                    FirefoxProfile profile = new FirefoxProfile();
-                    profile.addExtension(new File("no-script/noscript.xpi"));
-                    options.setProfile(profile);
+//                    FirefoxProfile profile = new FirefoxProfile();
+//                    profile.addExtension(new File("no-script/noscript.xpi"));
+//                    options.setProfile(profile);
                     driver = new FirefoxDriver(options);
                     break;
                 }
